@@ -22,6 +22,7 @@ import {
   Upload,
 } from 'lucide-react';
 import { Toaster } from '@/components/ui/toaster';
+import { Analytics } from '@vercel/analytics/react';
 
 type AppStatus = 'empty' | 'extracting' | 'ready' | 'error';
 type ViewKind = 'text' | 'image' | 'binary';
@@ -651,6 +652,7 @@ function App() {
         </main>
       </div>
       <Toaster />
+      <Analytics />
     </div>
   );
 }
