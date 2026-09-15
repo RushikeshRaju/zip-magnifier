@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "ProjectLens"
+description = "A mobile-first, browser-only project ZIP viewer for exploring real file trees and reading source files without uploads, accounts, or setup."
+version = "1.0.0"
+id = "artifacts/projectlens"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23782
+
+[services.development]
+run = "pnpm --filter @workspace/projectlens run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/projectlens", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/projectlens/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23782"
+BASE_PATH = "/"
