@@ -412,9 +412,11 @@ function App() {
     if (!selectedView) {
       return (
         <div className="welcome" data-testid="state-empty">
-          <div className="welcome-kicker">A quiet place to inspect code</div>
-          <h1>Open a project.<br /><span>See what’s inside.</span></h1>
-          <p className="welcome-copy">ProjectLens turns a ZIP into a readable file tree, right here in your browser. No account, no setup, no surprises.</p>
+          <div className="welcome-copy-block">
+            <div className="welcome-kicker">A quiet place to inspect code</div>
+            <h1>Open a project.<br /><span>See what’s inside.</span></h1>
+            <p className="welcome-copy">ProjectLens turns a ZIP into a readable file tree, right here in your browser. No account, no setup, no surprises.</p>
+          </div>
           <UploadPrompt onFile={extractZip} />
           <div className="trust-row">
             <span className="trust-item"><ShieldCheck size={13} /> Local-only processing</span>
