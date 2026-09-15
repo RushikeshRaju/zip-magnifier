@@ -615,7 +615,7 @@ function App() {
             {(drawerOpen || sidebarOpen) ? <PanelLeftClose size={18} /> : <PanelLeftOpen size={18} />}
           </button>
           <a className="brand" href="/" data-testid="link-projectlens-home">
-            <span className="brand-mark"><Archive size={15} /></span>
+            <img src="/favicon.png" alt="Zip Magnifier" className="brand-logo" width={28} height={28} />
             <span className="brand-name">Zip Magnifier</span>
             <span className="brand-meta">browser utility</span>
           </a>
