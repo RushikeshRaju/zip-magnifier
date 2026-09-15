@@ -549,7 +549,15 @@ function App() {
     <div className="lens-app">
       <header className="topbar">
         <div className="top-actions">
-          <button className="icon-button mobile-menu" onClick={() => setDrawerOpen(true)} aria-label="Open project explorer" data-testid="button-open-explorer"><Menu size={19} /></button>
+          <button
+            className="icon-button mobile-menu"
+            onClick={() => setDrawerOpen((open) => !open)}
+            aria-label={drawerOpen ? 'Close project explorer' : 'Open project explorer'}
+            aria-expanded={drawerOpen}
+            data-testid="button-open-explorer"
+          >
+            <Menu size={19} />
+          </button>
           <a className="brand" href="/" data-testid="link-projectlens-home">
             <span className="brand-mark"><Archive size={15} /></span>
             <span className="brand-name">ProjectLens</span>
