@@ -322,6 +322,7 @@ function App() {
     setError('');
     setStats({ files: 0, bytes: 0 });
     setLastFile(null);
+    setDrawerOpen(false);
   }, []);
 
   const extractZip = useCallback(async (file: File) => {
@@ -344,6 +345,7 @@ function App() {
       setExpanded(firstFolder ? new Set([firstFolder.id]) : new Set());
       setExtractionPhase('Ready');
       setStatus('ready');
+      setDrawerOpen(true);
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'The archive could not be read.');
       setStatus('error');
@@ -409,7 +411,7 @@ function App() {
         </div>
       );
     }
-    if (!selectedView) {
+    if (status === 'empty') {
       return (
         <div className="welcome" data-testid="state-empty">
           <div className="welcome-copy-block">
@@ -422,6 +424,20 @@ function App() {
             <span className="trust-item"><ShieldCheck size={13} /> Local-only processing</span>
             <span className="trust-item"><Check size={13} /> Read-only by design</span>
             <span className="trust-item"><Code2 size={13} /> Source stays intact</span>
+          </div>
+        </div>
+      );
+    }
+    if (!selectedView) {
+      return (
+        <div className="project-ready" data-testid="state-project-ready">
+          <div className="project-ready-mark"><Archive size={20} /></div>
+          <div className="welcome-kicker">Project ready to explore</div>
+          <h1>Select a file to read it.</h1>
+          <p>Choose a file from the explorer. Its contents will open here as a read-only preview, processed locally in your browser.</p>
+          <div className="project-ready-meta">
+            <span><Check size={13} /> {stats.files} files indexed</span>
+            <span><ShieldCheck size={13} /> Nothing uploaded</span>
           </div>
         </div>
       );
