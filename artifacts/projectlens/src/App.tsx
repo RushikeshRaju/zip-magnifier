@@ -579,14 +579,6 @@ function App() {
         <div className="eyebrow">Explorer</div>
         <div className="explorer-title">
           <h2 data-testid="text-project-name">{projectName || 'No project open'}</h2>
-          <button
-            className="close-sidebar-btn"
-            onClick={toggleSidebar}
-            title="Collapse sidebar (Ctrl+B)"
-            aria-label="Collapse sidebar"
-          >
-            <PanelLeftClose size={15} />
-          </button>
         </div>
         {status === 'ready' && <div className="project-meta" data-testid="text-project-stats">{stats.files} files · {formatBytes(stats.bytes)}</div>}
         {status === 'ready' && (
@@ -638,17 +630,6 @@ function App() {
         {drawerOpen && <button className="drawer-backdrop" onClick={() => setDrawerOpen(false)} aria-label="Close explorer" data-testid="button-close-explorer" />}
         <main className="content">
           <div className="content-bar">
-            {!sidebarOpen && (
-              <button
-                className="open-sidebar-pill"
-                onClick={() => setSidebarOpen(true)}
-                title="Open explorer (Ctrl+B)"
-                aria-label="Open explorer"
-              >
-                <PanelLeftOpen size={13} />
-                <span>Explorer</span>
-              </button>
-            )}
             <Code2 size={14} />
             {status === 'ready' ? <><span>project</span><span>/</span><span className="crumb-current">{selectedView?.node.path ?? 'select a file'}</span></> : <span>workspace / waiting for a ZIP</span>}
           </div>
