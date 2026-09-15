@@ -8,18 +8,17 @@ import {
   ChevronDown,
   ChevronRight,
   Code2,
+  Copy,
   File,
   FileCode2,
   FileImage,
   Folder,
   FolderOpen,
   Menu,
-  PanelLeftClose,
   RotateCcw,
   Search,
   ShieldCheck,
   Upload,
-  X,
 } from 'lucide-react';
 import { Toaster } from '@/components/ui/toaster';
 
@@ -297,6 +296,7 @@ function App() {
   const [stats, setStats] = useState({ files: 0, bytes: 0 });
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [fileLoading, setFileLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
   const [lastFile, setLastFile] = useState<File | null>(null);
   const imageUrlRef = useRef<string | null>(null);
   const nodeMap = useMemo(() => {
@@ -323,6 +323,7 @@ function App() {
     setStats({ files: 0, bytes: 0 });
     setLastFile(null);
     setDrawerOpen(false);
+    setCopied(false);
   }, []);
 
   const extractZip = useCallback(async (file: File) => {
@@ -356,6 +357,7 @@ function App() {
     if (!node.entry) return;
     setSelectedId(node.id);
     setDrawerOpen(false);
+    setCopied(false);
     setFileLoading(true);
     try {
       const bytes = await node.entry.async('uint8array');
@@ -378,6 +380,29 @@ function App() {
       setFileLoading(false);
     }
   }, []);
+
+  const copyFileContent = useCallback(async () => {
+    if (!selectedView?.text) return;
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(selectedView.text);
+      } else {
+        const textarea = document.createElement('textarea');
+        textarea.value = selectedView.text;
+        textarea.setAttribute('readonly', '');
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        textarea.remove();
+      }
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1800);
+    } catch {
+      setCopied(false);
+    }
+  }, [selectedView]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -454,17 +479,26 @@ function App() {
           <div className="file-size">{formatBytes(selectedView.bytes)}</div>
         </div>
         {selectedView.kind === 'text' && (
-          <div className="code-shell" data-testid="code-preview">
-            <table className="code-table">
-              <tbody>
-                {lines.map((line, index) => (
-                  <tr className="code-row" key={index}>
-                    <td className="line-number">{index + 1}</td>
-                    <td className="code-text">{tokenizeLine(line)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="code-view">
+            <div className="code-toolbar">
+              <span>{lines.length} lines</span>
+              <button className="copy-button" onClick={copyFileContent} aria-label="Copy file contents" data-testid="button-copy-file">
+                {copied ? <Check size={13} /> : <Copy size={13} />}
+                {copied ? 'Copied' : 'Copy'}
+              </button>
+            </div>
+            <div className="code-shell" data-testid="code-preview">
+              <table className="code-table">
+                <tbody>
+                  {lines.map((line, index) => (
+                    <tr className="code-row" key={index}>
+                      <td className="line-number">{index + 1}</td>
+                      <td className="code-text">{tokenizeLine(line)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
         {selectedView.kind === 'image' && (
@@ -490,7 +524,6 @@ function App() {
         <div className="eyebrow">Explorer</div>
         <div className="explorer-title">
           <h2 data-testid="text-project-name">{projectName || 'No project open'}</h2>
-          {status === 'ready' && <button className="icon-button" style={{ width: 30, height: 30 }} onClick={reset} aria-label="Close project" data-testid="button-close-project"><X size={15} /></button>}
         </div>
         {status === 'ready' && <div className="project-meta" data-testid="text-project-stats">{stats.files} files · {formatBytes(stats.bytes)}</div>}
         {status === 'ready' && (
@@ -525,7 +558,7 @@ function App() {
         </div>
         <div className="top-actions">
           <div className="local-badge" data-testid="status-local-only"><span className="local-dot" /> Local only</div>
-          {status === 'ready' && <button className="icon-button" onClick={reset} aria-label="Open another ZIP" data-testid="button-open-another"><PanelLeftClose size={17} /></button>}
+          {status === 'ready' && <button className="new-zip-button" onClick={reset} data-testid="button-new-zip">New ZIP</button>}
         </div>
       </header>
       <div className="workspace">

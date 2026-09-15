@@ -147,6 +147,8 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
 .error-detail { max-width:400px; padding:11px 13px; margin:0 auto 22px; text-align:left; color:hsl(var(--muted-foreground)); background:hsl(var(--destructive) / .06); border:1px solid hsl(var(--destructive) / .2); border-radius:6px; font-family:var(--app-font-mono); font-size:10px; overflow-wrap:anywhere; }
 .secondary-button { min-height:38px; border:1px solid hsl(var(--border)); border-radius:6px; padding:0 14px; background:hsl(var(--secondary)); color:hsl(var(--secondary-foreground)); font-size:12px; transition:background .15s ease, color .15s ease; }
 .secondary-button:hover { background:hsl(var(--border)); color:hsl(var(--foreground)); }
+.new-zip-button { min-height:32px; border:1px solid hsl(var(--border)); border-radius:6px; padding:0 11px; background:hsl(var(--secondary)); color:hsl(var(--secondary-foreground)); font-family:var(--app-font-mono); font-size:10px; letter-spacing:.04em; text-transform:uppercase; transition:background .15s ease, border-color .15s ease, color .15s ease; }
+.new-zip-button:hover { background:hsl(var(--accent) / .12); border-color:hsl(var(--accent) / .55); color:hsl(var(--accent)); }
 .project-ready { max-width:560px; margin:clamp(14vh, 22vh, 230px) auto 0; padding:0 22px; }
 .project-ready-mark { width:46px; height:46px; display:grid; place-items:center; margin-bottom:22px; color:hsl(var(--accent)); border:1px solid hsl(var(--accent) / .45); border-radius:10px; background:hsl(var(--accent) / .08); }
 .project-ready h1 { margin:18px 0 10px; font-size:clamp(25px, 4vw, 34px); line-height:1.1; letter-spacing:-.045em; }
@@ -160,7 +162,11 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
 .file-title { overflow-wrap:anywhere; margin:5px 0 5px; font-size:clamp(17px, 2vw, 21px); line-height:1.2; letter-spacing:-.025em; font-weight:600; }
 .file-path { color:hsl(var(--muted-foreground)); font-family:var(--app-font-mono); font-size:11px; overflow-wrap:anywhere; }
 .file-size { flex:0 0 auto; color:hsl(var(--muted-foreground)); font-family:var(--app-font-mono); font-size:10px; white-space:nowrap; padding-top:4px; }
-.code-shell { margin-top:16px; border:1px solid hsl(var(--border)); border-radius:8px; overflow:auto; background:hsl(220 15% 6%); box-shadow:0 10px 30px hsl(220 30% 2% / .16); }
+.code-toolbar { display:flex; align-items:center; justify-content:space-between; margin-top:16px; color:hsl(var(--muted-foreground)); font-family:var(--app-font-mono); font-size:10px; }
+.copy-button { display:inline-flex; align-items:center; gap:6px; min-height:30px; border:1px solid hsl(var(--border)); border-radius:6px; padding:0 9px; background:transparent; color:hsl(var(--muted-foreground)); font-family:var(--app-font-mono); font-size:10px; transition:background .15s ease, border-color .15s ease, color .15s ease; }
+.copy-button:hover { background:hsl(var(--secondary)); border-color:hsl(var(--accent) / .5); color:hsl(var(--foreground)); }
+.copy-button svg { color:hsl(var(--accent)); }
+.code-shell { margin-top:8px; border:1px solid hsl(var(--border)); border-radius:8px; overflow:auto; background:hsl(220 15% 6%); box-shadow:0 10px 30px hsl(220 30% 2% / .16); }
 .code-table { border-collapse:collapse; min-width:100%; width:max-content; font-family:var(--app-font-mono); font-size:12px; line-height:1.75; }
 .code-row:hover { background:hsl(var(--secondary) / .65); }
 .line-number { width:1%; min-width:48px; padding:0 14px 0 15px; border-right:1px solid hsl(var(--border)); color:hsl(216 8% 36%); text-align:right; user-select:none; vertical-align:top; }
