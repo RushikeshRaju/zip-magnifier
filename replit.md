@@ -1,10 +1,10 @@
-# ProjectLens
+# Zip Magnifier
 
-ProjectLens is a browser-only ZIP project viewer for exploring a real file tree and reading source files safely.
+Zip Magnifier is a browser-only ZIP project viewer for exploring a real file tree and reading source files safely.
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/projectlens run dev` — run the ProjectLens web app
+- `pnpm --filter @workspace/projectlens run dev` — run the Zip Magnifier web app
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
@@ -15,12 +15,12 @@ ProjectLens is a browser-only ZIP project viewer for exploring a real file tree 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
 - Frontend: React + Vite + TypeScript
 - ZIP extraction: JSZip in the browser
-- Styling: Tailwind CSS with local ProjectLens theme tokens
+- Styling: Tailwind CSS with local Zip Magnifier theme tokens
 
 ## Where things live
 
 - `artifacts/projectlens/src/App.tsx` — client-side ZIP pipeline, project tree, file reader, and UI states
-- `artifacts/projectlens/src/index.css` — ProjectLens visual system and responsive layout
+- `artifacts/projectlens/src/index.css` — Zip Magnifier visual system and responsive layout
 - `artifacts/projectlens/package.json` — frontend dependencies and scripts
 
 ## Architecture decisions
@@ -45,7 +45,7 @@ ProjectLens is a browser-only ZIP project viewer for exploring a real file tree 
 ## Gotchas
 
 - The Vite config expects `PORT` and `BASE_PATH` when running build commands outside the managed workflow.
-- There is intentionally no backend requirement for ProjectLens.
+- There is intentionally no backend requirement for Zip Magnifier.
 
 ## Pointers
 

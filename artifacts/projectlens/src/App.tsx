@@ -334,7 +334,7 @@ function App() {
     setSelectedView(null);
     setSelectedId(null);
     try {
-      if (!file.name.toLowerCase().endsWith('.zip')) throw new Error('ProjectLens only opens .zip archives.');
+      if (!file.name.toLowerCase().endsWith('.zip')) throw new Error('Zip Magnifier only opens .zip archives.');
       const zip = await JSZip.loadAsync(file, { checkCRC32: false });
       setExtractionPhase('Building file tree');
       const result = makeTree(zip);
@@ -442,7 +442,7 @@ function App() {
           <div className="welcome-copy-block">
             <div className="welcome-kicker">A quiet place to inspect code</div>
             <h1>Open a project.<br /><span>See what’s inside.</span></h1>
-            <p className="welcome-copy">ProjectLens turns a ZIP into a readable file tree, right here in your browser. No account, no setup, no surprises.</p>
+            <p className="welcome-copy">Zip Magnifier turns a ZIP into a readable file tree, right here in your browser. No account, no setup, no surprises.</p>
           </div>
           <UploadPrompt onFile={extractZip} />
           <div className="trust-row">
@@ -510,7 +510,7 @@ function App() {
           <div className="binary-preview" data-testid="binary-preview">
             <Binary size={32} className="binary-icon" />
             <h3>No readable preview for this file</h3>
-            <p>This binary is safe to inspect, but ProjectLens does not execute or modify uploaded files.</p>
+            <p>This binary is safe to inspect, but Zip Magnifier does not execute or modify uploaded files.</p>
           </div>
         )}
         <div className="file-footer"><ShieldCheck size={13} /> Previewed locally · never executed</div>
@@ -560,7 +560,7 @@ function App() {
           </button>
           <a className="brand" href="/" data-testid="link-projectlens-home">
             <span className="brand-mark"><Archive size={15} /></span>
-            <span className="brand-name">ProjectLens</span>
+            <span className="brand-name">Zip Magnifier</span>
             <span className="brand-meta">browser utility</span>
           </a>
         </div>
@@ -591,7 +591,7 @@ function App() {
               <div className="error-state" data-testid="state-error">
                 <div className="error-mark"><AlertTriangle size={20} /></div>
                 <h2>That ZIP could not be opened</h2>
-                <p>ProjectLens reads standard ZIP archives in your browser. Try a different file or export the project again.</p>
+                <p>Zip Magnifier reads standard ZIP archives in your browser. Try a different file or export the project again.</p>
                 <div className="error-detail" data-testid="text-error-detail">{error}</div>
                 <div style={{ display: 'flex', justifyContent: 'center', gap: 9 }}>
                   <button className="secondary-button" onClick={reset} data-testid="button-reset-error"><RotateCcw size={14} style={{ verticalAlign: '-2px', marginRight: 6 }} />Try another</button>

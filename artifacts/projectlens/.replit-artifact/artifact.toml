@@ -1,6 +1,6 @@
 kind = "web"
 previewPath = "/"
-title = "ProjectLens"
+title = "Zip Magnifier"
 description = "A mobile-first, browser-only project ZIP viewer for exploring real file trees and reading source files without uploads, accounts, or setup."
 version = "1.0.0"
 id = "artifacts/projectlens"
