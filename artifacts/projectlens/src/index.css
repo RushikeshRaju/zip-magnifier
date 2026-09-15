@@ -163,8 +163,11 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
 .file-path { color:hsl(var(--muted-foreground)); font-family:var(--app-font-mono); font-size:11px; overflow-wrap:anywhere; }
 .file-size { flex:0 0 auto; color:hsl(var(--muted-foreground)); font-family:var(--app-font-mono); font-size:10px; white-space:nowrap; padding-top:4px; }
 .code-toolbar { display:flex; align-items:center; justify-content:space-between; margin-top:16px; color:hsl(var(--muted-foreground)); font-family:var(--app-font-mono); font-size:10px; }
+.code-actions { display:flex; align-items:center; gap:8px; }
 .copy-button { display:inline-flex; align-items:center; gap:6px; min-height:30px; border:1px solid hsl(var(--border)); border-radius:6px; padding:0 9px; background:transparent; color:hsl(var(--muted-foreground)); font-family:var(--app-font-mono); font-size:10px; transition:background .15s ease, border-color .15s ease, color .15s ease; }
 .copy-button:hover { background:hsl(var(--secondary)); border-color:hsl(var(--accent) / .5); color:hsl(var(--foreground)); }
+.copy-button:disabled { cursor:not-allowed; opacity:.42; }
+.copy-button:disabled:hover { background:transparent; border-color:hsl(var(--border)); color:hsl(var(--muted-foreground)); }
 .copy-button svg { color:hsl(var(--accent)); }
 .code-shell { margin-top:8px; border:1px solid hsl(var(--border)); border-radius:8px; overflow:auto; background:hsl(220 15% 6%); box-shadow:0 10px 30px hsl(220 30% 2% / .16); }
 .code-table { border-collapse:collapse; min-width:100%; width:max-content; font-family:var(--app-font-mono); font-size:12px; line-height:1.75; }
@@ -210,4 +213,6 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
   .file-head { flex-direction:column; gap:7px; }
   .file-size { padding-top:0; }
   .code-text { padding-right:16px; }
+  .code-toolbar { align-items:flex-start; gap:12px; }
+  .code-actions { flex-wrap:wrap; justify-content:flex-end; }
 }

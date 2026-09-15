@@ -9,6 +9,7 @@ import {
   ChevronRight,
   Code2,
   Copy,
+  Download,
   File,
   FileCode2,
   FileImage,
@@ -61,6 +62,8 @@ const IMAGE_TYPES: Record<string, string> = {
   svg: 'image/svg+xml',
   webp: 'image/webp',
 };
+
+const MAX_DOWNLOAD_BYTES = 10 * 1024 * 1024;
 
 const KEYWORDS = new Set([
   'as', 'async', 'await', 'break', 'case', 'catch', 'class', 'const', 'continue', 'default',
@@ -297,6 +300,7 @@ function App() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [fileLoading, setFileLoading] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [downloadNotice, setDownloadNotice] = useState('');
   const [lastFile, setLastFile] = useState<File | null>(null);
   const imageUrlRef = useRef<string | null>(null);
   const nodeMap = useMemo(() => {
@@ -324,6 +328,7 @@ function App() {
     setLastFile(null);
     setDrawerOpen(false);
     setCopied(false);
+    setDownloadNotice('');
   }, []);
 
   const extractZip = useCallback(async (file: File) => {
@@ -358,6 +363,7 @@ function App() {
     setSelectedId(node.id);
     setDrawerOpen(false);
     setCopied(false);
+    setDownloadNotice('');
     setFileLoading(true);
     try {
       const bytes = await node.entry.async('uint8array');
@@ -401,6 +407,29 @@ function App() {
       window.setTimeout(() => setCopied(false), 1800);
     } catch {
       setCopied(false);
+    }
+  }, [selectedView]);
+
+  const downloadFile = useCallback(async () => {
+    if (!selectedView?.node.entry) return;
+    if (selectedView.bytes > MAX_DOWNLOAD_BYTES) {
+      setDownloadNotice('Downloads are limited to 10 MB.');
+      return;
+    }
+    try {
+      const bytes = await selectedView.node.entry.async('uint8array');
+      const url = URL.createObjectURL(new Blob([bytes.buffer as ArrayBuffer]));
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = selectedView.node.name;
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      URL.revokeObjectURL(url);
+      setDownloadNotice('Download started.');
+      window.setTimeout(() => setDownloadNotice(''), 1800);
+    } catch {
+      setDownloadNotice('This file could not be downloaded.');
     }
   }, [selectedView]);
 
@@ -481,11 +510,29 @@ function App() {
         {selectedView.kind === 'text' && (
           <div className="code-view">
             <div className="code-toolbar">
-              <span>{lines.length} lines</span>
-              <button className="copy-button" onClick={copyFileContent} aria-label="Copy file contents" data-testid="button-copy-file">
-                {copied ? <Check size={13} /> : <Copy size={13} />}
-                {copied ? 'Copied' : 'Copy'}
-              </button>
+              <span>{downloadNotice || `${lines.length} lines`}</span>
+              <div className="code-actions">
+                <button
+                  className="copy-button"
+                  onClick={copyFileContent}
+                  aria-label="Copy file contents"
+                  data-testid="button-copy-file"
+                >
+                  {copied ? <Check size={13} /> : <Copy size={13} />}
+                  {copied ? 'Copied' : 'Copy'}
+                </button>
+                <button
+                  className="copy-button"
+                  onClick={downloadFile}
+                  disabled={selectedView.bytes > MAX_DOWNLOAD_BYTES}
+                  aria-label={selectedView.bytes > MAX_DOWNLOAD_BYTES ? 'Download unavailable for files over 10 MB' : 'Download file'}
+                  title={selectedView.bytes > MAX_DOWNLOAD_BYTES ? 'Downloads are limited to 10 MB' : 'Download file'}
+                  data-testid="button-download-file"
+                >
+                  <Download size={13} />
+                  Download
+                </button>
+              </div>
             </div>
             <div className="code-shell" data-testid="code-preview">
               <table className="code-table">

@@ -1,0 +1,10 @@
+{
+  "buildCommand": "pnpm --filter @workspace/projectlens run build",
+  "outputDirectory": "artifacts/projectlens/dist/public",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
