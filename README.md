@@ -1,13 +1,17 @@
 <div align="center">
 
-  <h1>🔍 Zip Magnifier</h1>
+  <a href="https://zip-magnifier.vercel.app/" target="_blank" rel="noopener noreferrer">
+    <img src="./assets/logo.png" width="136" height="136" alt="Zip Magnifier Official Logo" />
+  </a>
+
+  <h1>Zip Magnifier</h1>
   <p><strong>Safe, lightning-fast, in-browser ZIP archive explorer and source code reader.</strong></p>
 
   <p>
-    <a href="https://zip-magnifier.vercel.app/"><strong>🌐 Explore Live Demo »</strong></a>
+    <a href="https://zip-magnifier.vercel.app/"><strong>🌐 Open Live Website »</strong></a>
   </p>
 
-  [![Vercel Deployment](https://img.shields.io/badge/Vercel-Deployed-black?style=for-the-badge&logo=vercel)](https://zip-magnifier.vercel.app/)
+  [![Vercel Deployment](https://img.shields.io/badge/Vercel-Live_Website-black?style=for-the-badge&logo=vercel)](https://zip-magnifier.vercel.app/)
   [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
   [![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
   [![Vite](https://img.shields.io/badge/Vite-7.x-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
@@ -20,31 +24,57 @@
 
 ## ⚡ Overview
 
-**Zip Magnifier** (ProjectLens Viewer) is a privacy-focused, zero-install developer tool designed to inspect, navigate, and read ZIP project archives directly in the browser.
+**Zip Magnifier** is a privacy-first, zero-install developer tool engineered to inspect, navigate, and read ZIP project archives directly inside your browser.
 
-Ever downloaded a project archive, code release, or backup zip and hesitated to extract thousands of files to your disk? Zip Magnifier decompresses and indexes the archive entirely in your browser memory—**no files are ever uploaded to any server**.
+Ever downloaded an unfamiliar repository archive, code release, or backup zip and hesitated to extract thousands of files to your disk? Zip Magnifier decompresses and indexes the archive entirely in your browser's local memory—**no files are ever uploaded to any server**.
 
 ---
 
-## ✨ Features
+## ✨ Key Features
 
-- 🛡️ **100% Client-Side & Private** — All ZIP decompression runs locally via Web APIs and `JSZip`. Not a single byte ever leaves your device.
-- 📂 **Interactive File Tree** — Hierarchical folder exploration with expand/collapse, instant filtering, and filename search.
+- 🛡️ **100% Client-Side & Private** — All ZIP decompression runs strictly locally using Web APIs and `JSZip`. Not a single byte ever leaves your machine.
+- 🎛️ **Collapsible Sidebar (Desktop & Mobile)** — A clean, minimal toggle button right beside the title in the header navbar lets you collapse or expand the file explorer anytime.
+- ⌨️ **Quick Keyboard Shortcut (`Ctrl + B` / `Cmd + B`)** — Toggle the explorer sidebar smoothly without lifting your hands from the keyboard.
+- 📂 **Interactive File Tree & Filter** — Hierarchical folder structure with expand/collapse, instant path filtering, and real-time filename search.
 - 💻 **Syntax-Aware Code Reader** — Clean, distraction-free source reader with line numbering, preserved indentation, and code formatting.
-- 🖼️ **Media & Asset Previews** — Preview SVG, PNG, JPG, WebP, and GIF images directly without external tools.
-- ⚡ **Lazy Loading Architecture** — File contents are loaded on-demand when selected, keeping memory consumption low even for large archives.
-- 🔒 **Safe Sandbox Execution** — HTML, JS, and scripts are rendered purely as text and never executed in your browser context.
-- 🌓 **Developer-First Dark UI** — Built with Tailwind CSS and Radix UI primitives for an ergonomic, responsive layout on desktop and mobile.
+- 🖼️ **Image & Media Previews** — Native in-browser previews for SVG, PNG, JPG, WebP, and GIF assets without downloading third-party tools.
+- ⚡ **Lazy Loading Architecture** — File contents are loaded on-demand when selected, keeping memory consumption low even for archives with thousands of files.
+- 🔒 **Safe Sandbox Execution** — Scripts, HTML, and binary payloads are rendered purely as text and never executed in your browser context.
+- 🎨 **Distinctive Visual Identity** — Custom multi-resolution transparent favicon and identity combining the archive zipper, precision magnification lens, and observant eye motif.
 
 ---
 
 ## 🚀 Live Demo
 
-Experience the live application hosted on Vercel:
+Experience the live application hosted globally on Vercel:
 
 👉 **[https://zip-magnifier.vercel.app/](https://zip-magnifier.vercel.app/)**
 
-Simply drag & drop any `.zip` file onto the drop zone to begin browsing instantly.
+*Tip: Drag & drop any `.zip` file onto the drop zone or click "Choose ZIP" to begin browsing immediately.*
+
+---
+
+## 🎨 Brand Identity
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center">
+        <img src="./assets/logo.png" width="96" height="96" alt="Zip Magnifier Icon" /><br />
+        <b>The Magnifier Emblem</b><br />
+        <sub>Interlocking archive zipper + precision lens + observant eye</sub>
+      </td>
+      <td>
+        The Zip Magnifier brand identity blends three core concepts:
+        <ul>
+          <li><b>The Zipper:</b> Represents compressed project archives.</li>
+          <li><b>The Magnifying Glass:</b> Represents deep inspection and code reading.</li>
+          <li><b>The Observant Eye:</b> Symbolizes security, transparency, and clarity when exploring unknown archives safely.</li>
+        </ul>
+      </td>
+    </tr>
+  </table>
+</div>
 
 ---
 
@@ -52,53 +82,60 @@ Simply drag & drop any `.zip` file onto the drop zone to begin browsing instantl
 
 | Layer | Technology | Purpose |
 | :--- | :--- | :--- |
-| **Framework** | [React 19](https://react.dev/) | Component architecture & reactive UI |
+| **Framework** | [React 19](https://react.dev/) | Modern reactive component architecture |
 | **Language** | [TypeScript 5.9](https://www.typescriptlang.org/) | Strict type safety across the monorepo |
-| **Bundler** | [Vite 7](https://vitejs.dev/) | Ultra-fast local dev and optimized production builds |
-| **Styling** | [Tailwind CSS](https://tailwindcss.com/) | Modern, dark-first responsive utility styling |
-| **Components** | [Radix UI](https://www.radix-ui.com/) | Accessible, unstyled UI primitives |
-| **Extraction** | [JSZip](https://stuk.github.io/jszip/) | In-memory decompression of ZIP file structures |
+| **Bundler** | [Vite 7](https://vitejs.dev/) | Blazing fast local dev and optimized tree-shaken builds |
+| **Styling** | [Tailwind CSS](https://tailwindcss.com/) | Dark-first responsive developer UI |
+| **Components** | [Radix UI](https://www.radix-ui.com/) | Accessible unstyled primitives |
+| **Extraction** | [JSZip](https://stuk.github.io/jszip/) | Client-side in-memory ZIP extraction |
 | **Icons** | [Lucide React](https://lucide.dev/) | Clean, consistent developer iconography |
-| **Hosting** | [Vercel](https://vercel.com/) | Global Edge CDN static deployment |
+| **Deployment** | [Vercel](https://vercel.com/) | Global Edge network static hosting |
 
 ---
 
 ## 🏗️ Architecture
 
 ```
-User uploads ZIP 
+User uploads ZIP (Drag & Drop or File Picker)
       │
       ▼
-Browser (JSZip) ──► In-Memory File Tree Index
-                          │
-            ┌─────────────┴─────────────┐
-            ▼                           ▼
-    Selected Text File          Selected Image File
-            │                           │
-            ▼                           ▼
-    Text Decoder Stream         Blob Object URL
-            │                           │
-            ▼                           ▼
-    Syntax & Line Reader        Secure Image Preview
+Browser Memory (JSZip) ──► In-Memory File Tree Index
+                                  │
+                    ┌─────────────┴─────────────┐
+                    ▼                           ▼
+            Selected Text File          Selected Image File
+                    │                           │
+                    ▼                           ▼
+            Text Decoder Stream         Blob Object URL
+                    │                           │
+                    ▼                           ▼
+            Syntax & Line Reader        Secure Image Preview
 ```
 
 ---
 
 ## 📁 Repository Structure
 
-This repository is structured as a **pnpm monorepo**:
+This project is organized as a **pnpm monorepo**:
 
 ```text
+├── assets/
+│   └── logo.png            # Official high-resolution transparent brand logo
 ├── artifacts/
-│   └── projectlens/        # Main frontend web application (React + Vite)
+│   └── projectlens/        # Main frontend application (React + Vite)
+│       ├── public/         # Static assets (favicons, manifest, icons)
+│       │   ├── favicon.svg # Vector favicon for modern browser tabs
+│       │   ├── favicon.ico # Multi-resolution ICO (16, 32, 48)
+│       │   └── favicon.png # High-DPI tab icon
 │       ├── src/
-│       │   ├── App.tsx     # Core ZIP pipeline, tree explorer, and reader
-│       │   ├── index.css   # Theme styling & layout rules
+│       │   ├── App.tsx     # Core ZIP reader, tree explorer, and layout
+│       │   ├── index.css   # Layout, theme tokens, and animations
 │       │   └── main.tsx    # Application entry point
 │       ├── package.json    # Frontend dependencies
-│       └── vite.config.ts  # Vite build configuration
+│       └── vite.config.ts  # Vite configuration
 ├── lib/                    # Shared workspace libraries
-├── pnpm-workspace.yaml     # pnpm monorepo definitions & catalog versions
+├── scripts/                # Utility scripts (favicon generator, build helpers)
+├── pnpm-workspace.yaml     # pnpm workspace configuration
 ├── vercel.json             # Vercel deployment configuration
 └── package.json            # Root workspace configuration
 ```
@@ -113,7 +150,7 @@ This repository is structured as a **pnpm monorepo**:
 - [pnpm](https://pnpm.io/) (v9 or newer)
 
 ```bash
-# Enable pnpm via corepack if not already installed
+# Enable pnpm via corepack if not already active
 corepack enable
 corepack prepare pnpm@latest --activate
 ```
@@ -131,7 +168,7 @@ corepack prepare pnpm@latest --activate
    pnpm install
    ```
 
-3. **Start development server:**
+3. **Run development server:**
    ```bash
    pnpm --filter @workspace/projectlens run dev
    ```
@@ -142,34 +179,34 @@ corepack prepare pnpm@latest --activate
 
 ## 📦 Production Build
 
-To test the production build locally:
+To build the static production bundle locally:
 
 ```bash
 pnpm --filter @workspace/projectlens run build
 ```
 
-Production assets will be emitted to `artifacts/projectlens/dist/public/`.
+Production-ready assets will be generated in `artifacts/projectlens/dist/public/`.
 
 ---
 
-## 🚀 Deploying to Vercel
+## 🚀 Deployment
 
-This repository includes a [`vercel.json`](./vercel.json) pre-configured for one-click deployment on Vercel:
+The project includes a pre-configured [`vercel.json`](./vercel.json):
 
-1. Import your fork/repository on [Vercel](https://vercel.com/new).
-2. The project settings will be automatically populated from `vercel.json`:
+1. Connect your repository to [Vercel](https://vercel.com/new).
+2. The deployment settings will automatically configure:
    - **Framework Preset:** `Vite`
    - **Build Command:** `pnpm --filter @workspace/projectlens run build`
    - **Output Directory:** `artifacts/projectlens/dist/public`
-3. Click **Deploy**.
+3. Click **Deploy**. Every push to `main` will automatically trigger a new deployment.
 
 ---
 
 ## 🔒 Security & Privacy
 
-- **Zero Remote Calls:** No file contents, archive entries, or telemetry metadata are transmitted over the network.
-- **Purely Ephemeral:** All extracted assets exist strictly in browser memory and are discarded as soon as the tab is refreshed or closed.
-- **Non-executable Environment:** Script files (`.js`, `.sh`, `.bat`, etc.) are rendered purely as plaintext to safeguard against malicious payload execution.
+- **Zero Network Uploads:** No file contents, archive entries, or telemetry are transmitted over the network.
+- **Purely Ephemeral:** All extracted assets exist strictly in browser memory and are purged immediately when the tab is closed or refreshed.
+- **Non-executable Environment:** Scripts (`.js`, `.py`, `.sh`, `.bat`, etc.) are rendered purely as read-only plaintext to ensure zero risk of malicious execution.
 
 ---
 
