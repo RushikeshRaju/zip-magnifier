@@ -16,6 +16,8 @@ import {
   Folder,
   FolderOpen,
   Menu,
+  PanelLeftClose,
+  PanelLeftOpen,
   RotateCcw,
   Search,
   ShieldCheck,
@@ -298,21 +300,21 @@ function App() {
   const [extractionPhase, setExtractionPhase] = useState('Reading archive');
   const [error, setError] = useState('');
   const [stats, setStats] = useState({ files: 0, bytes: 0 });
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [fileLoading, setFileLoading] = useState(false);
   const [copied, setCopied] = useState(false);
   const [downloadNotice, setDownloadNotice] = useState('');
   const [lastFile, setLastFile] = useState<File | null>(null);
   const imageUrlRef = useRef<string | null>(null);
-  const nodeMap = useMemo(() => {
-    const map = new Map<string, TreeNode>();
-    const visit = (node: TreeNode) => {
-      map.set(node.id, node);
-      node.children.forEach(visit);
-    };
-    visit(tree);
-    return map;
-  }, [tree]);
+
+  const toggleSidebar = useCallback(() => {
+    if (typeof window !== 'undefined' && window.innerWidth <= 780) {
+      setDrawerOpen((open) => !open);
+    } else {
+      setSidebarOpen((open) => !open);
+    }
+  }, []);
 
   const reset = useCallback(() => {
     if (imageUrlRef.current) URL.revokeObjectURL(imageUrlRef.current);
@@ -327,6 +329,7 @@ function App() {
     setError('');
     setStats({ files: 0, bytes: 0 });
     setLastFile(null);
+    setSidebarOpen(true);
     setDrawerOpen(false);
     setCopied(false);
     setDownloadNotice('');
@@ -437,10 +440,14 @@ function App() {
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') setDrawerOpen(false);
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'b') {
+        event.preventDefault();
+        toggleSidebar();
+      }
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, []);
+  }, [toggleSidebar]);
 
   useEffect(() => () => {
     if (imageUrlRef.current) URL.revokeObjectURL(imageUrlRef.current);
@@ -567,11 +574,19 @@ function App() {
   };
 
   const explorer = (
-    <aside className={`explorer ${drawerOpen ? 'is-open' : ''}`} aria-label="Project explorer">
+    <aside className={`explorer ${drawerOpen ? 'is-open' : ''} ${!sidebarOpen ? 'is-collapsed' : ''}`} aria-label="Project explorer">
       <div className="explorer-head">
         <div className="eyebrow">Explorer</div>
         <div className="explorer-title">
           <h2 data-testid="text-project-name">{projectName || 'No project open'}</h2>
+          <button
+            className="close-sidebar-btn"
+            onClick={toggleSidebar}
+            title="Collapse sidebar (Ctrl+B)"
+            aria-label="Collapse sidebar"
+          >
+            <PanelLeftClose size={15} />
+          </button>
         </div>
         {status === 'ready' && <div className="project-meta" data-testid="text-project-stats">{stats.files} files · {formatBytes(stats.bytes)}</div>}
         {status === 'ready' && (
@@ -598,13 +613,14 @@ function App() {
       <header className="topbar">
         <div className="top-actions">
           <button
-            className="icon-button mobile-menu"
-            onClick={() => setDrawerOpen((open) => !open)}
-            aria-label={drawerOpen ? 'Close project explorer' : 'Open project explorer'}
-            aria-expanded={drawerOpen}
+            className="icon-button sidebar-toggle"
+            onClick={toggleSidebar}
+            aria-label={(drawerOpen || sidebarOpen) ? 'Close project explorer' : 'Open project explorer'}
+            title={(drawerOpen || sidebarOpen) ? 'Collapse sidebar (Ctrl+B)' : 'Expand sidebar (Ctrl+B)'}
+            aria-expanded={drawerOpen || sidebarOpen}
             data-testid="button-open-explorer"
           >
-            <Menu size={19} />
+            {(drawerOpen || sidebarOpen) ? <PanelLeftClose size={18} /> : <PanelLeftOpen size={18} />}
           </button>
           <a className="brand" href="/" data-testid="link-projectlens-home">
             <span className="brand-mark"><Archive size={15} /></span>
@@ -622,6 +638,17 @@ function App() {
         {drawerOpen && <button className="drawer-backdrop" onClick={() => setDrawerOpen(false)} aria-label="Close explorer" data-testid="button-close-explorer" />}
         <main className="content">
           <div className="content-bar">
+            {!sidebarOpen && (
+              <button
+                className="open-sidebar-pill"
+                onClick={() => setSidebarOpen(true)}
+                title="Open explorer (Ctrl+B)"
+                aria-label="Open explorer"
+              >
+                <PanelLeftOpen size={13} />
+                <span>Explorer</span>
+              </button>
+            )}
             <Code2 size={14} />
             {status === 'ready' ? <><span>project</span><span>/</span><span className="crumb-current">{selectedView?.node.path ?? 'select a file'}</span></> : <span>workspace / waiting for a ZIP</span>}
           </div>
