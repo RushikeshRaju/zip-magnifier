@@ -14,7 +14,9 @@ import {
   FileCode2,
   FileImage,
   Folder,
+  FolderInput,
   FolderOpen,
+  Home,
   Menu,
   PanelLeftClose,
   PanelLeftOpen,
@@ -22,12 +24,14 @@ import {
   Search,
   ShieldCheck,
   Upload,
+  X,
 } from 'lucide-react';
 import { Toaster } from '@/components/ui/toaster';
 import { Analytics } from '@vercel/analytics/react';
 
 type AppStatus = 'empty' | 'extracting' | 'ready' | 'error';
 type ViewKind = 'text' | 'image' | 'binary';
+type ConfirmAction = 'home' | 'new_zip' | null;
 
 type TreeNode = {
   id: string;
@@ -302,6 +306,7 @@ function App() {
   const [stats, setStats] = useState({ files: 0, bytes: 0 });
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [confirmAction, setConfirmAction] = useState<ConfirmAction>(null);
   const [fileLoading, setFileLoading] = useState(false);
   const [copied, setCopied] = useState(false);
   const [downloadNotice, setDownloadNotice] = useState('');
@@ -331,9 +336,17 @@ function App() {
     setLastFile(null);
     setSidebarOpen(true);
     setDrawerOpen(false);
+    setConfirmAction(null);
     setCopied(false);
     setDownloadNotice('');
   }, []);
+
+  const handleConfirmAction = useCallback(() => {
+    if (confirmAction === 'home' || confirmAction === 'new_zip') {
+      reset();
+    }
+    setConfirmAction(null);
+  }, [confirmAction, reset]);
 
   const extractZip = useCallback(async (file: File) => {
     setLastFile(file);
@@ -439,7 +452,13 @@ function App() {
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setDrawerOpen(false);
+      if (event.key === 'Escape') {
+        if (confirmAction) {
+          setConfirmAction(null);
+          return;
+        }
+        setDrawerOpen(false);
+      }
       if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'b') {
         event.preventDefault();
         toggleSidebar();
@@ -447,7 +466,7 @@ function App() {
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [toggleSidebar]);
+  }, [toggleSidebar, confirmAction]);
 
   useEffect(() => () => {
     if (imageUrlRef.current) URL.revokeObjectURL(imageUrlRef.current);
@@ -614,7 +633,17 @@ function App() {
           >
             {(drawerOpen || sidebarOpen) ? <PanelLeftClose size={18} /> : <PanelLeftOpen size={18} />}
           </button>
-          <a className="brand" href="/" data-testid="link-projectlens-home">
+          <a
+            className="brand"
+            href="/"
+            onClick={(e) => {
+              if (status === 'ready' || status === 'extracting') {
+                e.preventDefault();
+                setConfirmAction('home');
+              }
+            }}
+            data-testid="link-projectlens-home"
+          >
             <img src="/favicon.png" alt="Zip Magnifier" className="brand-logo" width={28} height={28} />
             <span className="brand-name">Zip Magnifier</span>
             <span className="brand-meta">browser utility</span>
@@ -622,7 +651,15 @@ function App() {
         </div>
         <div className="top-actions">
           <div className="local-badge" data-testid="status-local-only"><span className="local-dot" /> Local only</div>
-          {status === 'ready' && <button className="new-zip-button" onClick={reset} data-testid="button-new-zip">New ZIP</button>}
+          {status === 'ready' && (
+            <button
+              className="new-zip-button"
+              onClick={() => setConfirmAction('new_zip')}
+              data-testid="button-new-zip"
+            >
+              New ZIP
+            </button>
+          )}
         </div>
       </header>
       <div className="workspace">
@@ -659,6 +696,71 @@ function App() {
           </div>
         </main>
       </div>
+
+      {confirmAction && (
+        <div
+          className="modal-backdrop"
+          onClick={() => setConfirmAction(null)}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="confirm-dialog-title"
+        >
+          <div
+            className="confirm-dialog"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="confirm-top-row">
+              <div className="confirm-icon-wrap">
+                {confirmAction === 'home' ? <Home size={20} /> : <FolderInput size={20} />}
+              </div>
+              <button
+                className="confirm-close-x"
+                onClick={() => setConfirmAction(null)}
+                aria-label="Close dialog"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="confirm-body">
+              <h2 id="confirm-dialog-title" className="confirm-title">
+                {confirmAction === 'home' ? 'Return to Home Page?' : 'Open a New ZIP Archive?'}
+              </h2>
+              <p className="confirm-description">
+                {confirmAction === 'home'
+                  ? 'Do you want to return to the home page? Your currently opened project will be closed and cleared.'
+                  : 'Are you sure you want to remove the existing ZIP and open a new one? Your current project view will be cleared.'}
+              </p>
+            </div>
+
+            {projectName && (
+              <div className="confirm-project-badge">
+                <Archive size={13} style={{ color: 'hsl(var(--accent))', flexShrink: 0 }} />
+                <span className="confirm-project-text">Currently open: <strong>{projectName}.zip</strong></span>
+              </div>
+            )}
+
+            <div className="confirm-actions">
+              <button
+                className="confirm-cancel-btn"
+                onClick={() => setConfirmAction(null)}
+                type="button"
+              >
+                {confirmAction === 'home' ? 'Stay on Project' : 'Keep Current Project'}
+              </button>
+              <button
+                className="confirm-proceed-btn"
+                onClick={handleConfirmAction}
+                type="button"
+                autoFocus
+              >
+                {confirmAction === 'home' ? 'Yes, Go to Home' : 'Yes, Open New ZIP'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <Toaster />
       <Analytics />
     </div>
